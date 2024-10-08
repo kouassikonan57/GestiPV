@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReclamationResource\Pages;
-use App\Filament\Resources\ReclamationResource\RelationManagers;
 use App\Models\Reclamation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReclamationResource extends Resource
 {
@@ -29,6 +26,12 @@ class ReclamationResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
+                Forms\Components\Select::make('etudiant_id')
+                    ->relationship('etudiant', 'nom')
+                    ->required(),
+                Forms\Components\Select::make('note_id')
+                    ->relationship('note', 'valeur')
+                    ->required(),
             ]);
     }
 
@@ -37,6 +40,14 @@ class ReclamationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('libelle')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('etudiant.nom')
+                    ->label('Étudiant')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('note.valeur')
+                    ->label('Note')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
