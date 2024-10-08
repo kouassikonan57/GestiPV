@@ -69,20 +69,16 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -92,13 +88,5 @@ class UserResource extends Resource
         return [
             'index' => Pages\ManageUsers::route('/'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }

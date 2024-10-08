@@ -13,7 +13,6 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-    use SoftDeletes;
     use HasRoles;
     use HasPanelShield;
 
