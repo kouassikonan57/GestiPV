@@ -35,7 +35,7 @@ class UeResource extends Resource
                         'MAJEURES' => 'Majeures',
                         'MINEURES' => 'Mineures'
                     ]),
-                Forms\Components\Select::make('semestre')
+                Forms\Components\Select::make('semestre_id')
                     ->relationship('semestre', 'libelle')
                     ->required(),
             ]);

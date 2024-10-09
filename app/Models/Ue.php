@@ -59,7 +59,7 @@ class Ue extends Model
             $mention = $this->determinerMention($moyenne);
 
             // Créer ou mettre à jour la décision
-            mention::updateOrCreate(
+            Mention::updateOrCreate(
                 [
                     'etudiant_id' => $etudiantId,
                     'ue_id' => $this->id,
