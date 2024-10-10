@@ -19,6 +19,9 @@ class SemestreResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Gestion';
+
+
     public static function form(Form $form): Form
     {
         return $form

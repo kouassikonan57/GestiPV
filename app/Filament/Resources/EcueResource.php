@@ -17,7 +17,8 @@ class EcueResource extends Resource
 {
     protected static ?string $model = Ecue::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-swatch';
+    protected static ?string $navigationGroup = 'Gestion';
 
     public static function form(Form $form): Form
     {

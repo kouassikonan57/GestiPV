@@ -14,8 +14,9 @@ class ReclamationResource extends Resource
 {
     protected static ?string $model = Reclamation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
+    protected static ?string $navigationGroup = 'Gestion';
     public static function form(Form $form): Form
     {
         return $form
