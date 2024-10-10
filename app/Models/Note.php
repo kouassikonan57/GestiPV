@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,7 @@ class Note extends Model
         'ecue_id',
     ];
 
+
     public function ecue(): BelongsTo
     {
         return $this->belongsTo(Ecue::class);
@@ -27,8 +29,9 @@ class Note extends Model
         return $this->belongsTo(Etudiant::class);
     }
 
-    protected static function booted()
+    protected static function booted(): void
     {
+        static::addGlobalScope(new UserScope());
         // Calculer la moyenne de l'UE chaque fois qu'une note est créée ou mise à jour
         static::saved(function ($note) {
             $ue = $note->ecue->ue;
