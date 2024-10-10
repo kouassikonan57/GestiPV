@@ -28,20 +28,21 @@ class Etudiant extends Model
         static::addGlobalScope(new UserScope());
 
         static::creating(function ($etudiant) {
-            DB::transaction(function () use ($etudiant) {
-                // Créer l’utilisateur
-                $user = User::create([
-                    'name' => "{$etudiant->nom} {$etudiant->prenom}",
-                    'email' => strtolower(last(explode(' ', trim($etudiant->prenom)))) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
-                    'password' => bcrypt($etudiant->matricule), // Vous pouvez générer un mot de passe plus complexe
-                ]);
+            if (!$etudiant->user_id) {
+                $user = DB::transaction(function () use ($etudiant) {
+                    $user = User::create([
+                        'name' => "{$etudiant->nom} {$etudiant->prenom}",
+                        'email' => strtolower(last(explode(' ', trim($etudiant->prenom)))) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
+                        'password' => bcrypt($etudiant->matricule),
+                    ]);
 
-                // Assigner le rôle à l’utilisateur
-                $user->assignRole('Etudiant');
+                    $user->assignRole('Etudiant');
 
-                // Assigner l'ID utilisateur à l'étudiant
+                    return $user;
+                });
+
                 $etudiant->user_id = $user->id;
-            });
+            }
         });
     }
 
