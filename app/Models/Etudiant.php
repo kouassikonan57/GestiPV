@@ -29,8 +29,8 @@ class Etudiant extends Model
         static::addGlobalScope(new UserScope());
         static::creating(function ($etudiant) {
             $user = User::create([
-                'name' => "{$etudiant->nom} {$etudiant->prenom}",
-                'email' => strtolower($etudiant->prenom) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
+                'name' => "$etudiant->nom $etudiant->prenom",
+                'email' => strtolower(last(explode(' ', trim($etudiant->prenom)))) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
                 'password' => bcrypt($etudiant->matricule), // Vous pouvez générer un mot de passe plus complexe
             ]);
 
