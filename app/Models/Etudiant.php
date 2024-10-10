@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class Etudiant extends Model
@@ -27,18 +28,25 @@ class Etudiant extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new UserScope());
+
         static::creating(function ($etudiant) {
-            $user = User::create([
-                'name' => "$etudiant->nom $etudiant->prenom",
-                'email' => strtolower(last(explode(' ', trim($etudiant->prenom)))) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
-                'password' => bcrypt($etudiant->matricule), // Vous pouvez générer un mot de passe plus complexe
-            ]);
+            DB::transaction(function () use ($etudiant) {
+                // Créer l'utilisateur
+                $user = User::create([
+                    'name' => "{$etudiant->nom} {$etudiant->prenom}",
+                    'email' => strtolower(last(explode(' ', trim($etudiant->prenom)))) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
+                    'password' => bcrypt($etudiant->matricule), // Vous pouvez générer un mot de passe plus complexe
+                ]);
 
-            $user->assignRole('Etudiant');
+                // Assigner le rôle à l'utilisateur
+                $user->assignRole('Etudiant');
 
-            $etudiant->user_id = $user->id;
+                // Assigner l'ID utilisateur à l'étudiant
+                $etudiant->user_id = $user->id;
+            });
         });
     }
+
 
     public function notes(): HasMany
     {
