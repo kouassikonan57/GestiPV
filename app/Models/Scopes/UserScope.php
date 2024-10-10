@@ -18,9 +18,10 @@ class UserScope implements Scope
             $user = Auth::user();
 
             if ($user->hasRole('Etudiant')) {
-                if ($model->getAttribute('user_id') !== null) {
+                $fillable = $model->getFillable();
+                if (in_array('user_id', $fillable)) {
                     $builder->where('user_id', $user->id);
-                } elseif ($model->getAttribute('etudiant_id') !== null) {
+                } elseif (in_array('etudiant_id', $fillable)) {
                     $builder->where('etudiant_id', $user->id);
                 }
             }

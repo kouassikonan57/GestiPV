@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 
 class Etudiant extends Model
 {
@@ -31,14 +29,14 @@ class Etudiant extends Model
 
         static::creating(function ($etudiant) {
             DB::transaction(function () use ($etudiant) {
-                // Créer l'utilisateur
+                // Créer l’utilisateur
                 $user = User::create([
                     'name' => "{$etudiant->nom} {$etudiant->prenom}",
                     'email' => strtolower(last(explode(' ', trim($etudiant->prenom)))) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
                     'password' => bcrypt($etudiant->matricule), // Vous pouvez générer un mot de passe plus complexe
                 ]);
 
-                // Assigner le rôle à l'utilisateur
+                // Assigner le rôle à l’utilisateur
                 $user->assignRole('Etudiant');
 
                 // Assigner l'ID utilisateur à l'étudiant
@@ -64,7 +62,7 @@ class Etudiant extends Model
     }
 
     /**
-     * Relation avec les UE (Unités d'Enseignement).
+     * Relation avec les UE (Unités d’Enseignement).
      */
     public function ues(): HasMany
     {
