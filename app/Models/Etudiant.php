@@ -28,7 +28,7 @@ class Etudiant extends Model
         static::creating(function ($etudiant) {
             $user = User::create([
                 'name' => "{$etudiant->nom} {$etudiant->prenom}",
-                'email' => strtolower($etudiant->prenom) . '.' . strtolower($etudiant->nom) . '@etu.univ.ci',
+                'email' => strtolower($etudiant->prenom) . '.' . strtolower($etudiant->nom) . '@ufhb.edu.ci',
                 'password' => bcrypt($etudiant->matricule), // Vous pouvez générer un mot de passe plus complexe
             ]);
 
