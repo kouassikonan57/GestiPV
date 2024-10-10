@@ -41,6 +41,7 @@ class Etudiant extends Model
                     return $user;
                 });
 
+                $user = $user->fresh();
                 $etudiant->user_id = $user->id;
             }
         });
